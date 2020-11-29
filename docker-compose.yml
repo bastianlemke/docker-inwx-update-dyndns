@@ -1,0 +1,7 @@
+dyndns:
+  build: .
+  restart: always
+  environment:
+    - IPV6_ENABLED=true
+    - USERNAME=<username>
+    - PASSWORD=<password>

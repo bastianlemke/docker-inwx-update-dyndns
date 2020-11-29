@@ -1,0 +1,34 @@
+# Set this to false if no IPv6 should be sent to INWX.
+ipv6_enabled = ${IPV6_ENABLED}
+
+# The commands to fetch the current IPv4/IPv6.
+# For both IPv4 and IPv6, a list of commands is defined. The script attempts to
+# obtain a valid IP with the first command. If successful (i.e., the command
+# returned with status 0 and the result is a valid IPv4/IPv6), this IP is used,
+# otherwise, the next command is tried.
+ipv4_commands = [
+   ["curl", "-4", "--fail", "-s", "-S", "http://ipv4.xnet.space"],     # primary command
+   ["curl", "-4", "--fail", "-s", "-S", "http://v4.ident.me"],       # fallback
+]
+# If ipv6_enabled was set to false, this setting is ignored: You may remove it,
+# comment it or leave it as it is.
+ipv6_commands = [
+    ["curl", "-6", "--fail", "-s", "-S", "http://ipv6.xnet.space"],    # primary command
+    ["curl", "-6", "--fail", "-s", "-S", "http://v6.ident.me"],      # fallback
+]
+
+# Check if the IP has changed every 10 seconds.
+# Note that this script is not going to send a new HTTP request to INWX every
+# sleep_interval seconds, instead, it will run the commands mentioned above. If
+# the IP has not changed, no new HTTP request is sent.
+sleep_interval = 10
+
+# If all commands failed to obtain a valid IP address, wait 3 minutes before
+# retrying. This setting is used to avoid spamming log files when there is no
+# internet connectivity temporarily.
+retry_after = 180
+
+# Your accounts are listed at inwx.com -> Nameserver -> DynDNS
+[[account]]
+username = "${USERNAME}"
+password = "${PASSWORD}"
